@@ -1,0 +1,96 @@
+USE [ITOCostModels]
+GO
+
+/****** Object:  Table [dbo].[Model]    Script Date: 04/01/2013 18:12:52 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[Model](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[TowerId] [int] NOT NULL,
+	[DealId] [int] NOT NULL,
+	[TemplateNumber] [varchar](50) NULL,
+	[VersionNumber] [varchar](50) NULL,
+	[UnitCostRetrievedDate] [datetime] NULL,
+	[CreatedBy] [varchar](50) NOT NULL,
+	[CreatedDate] [datetime] NOT NULL,
+	[LastModifiedBy] [varchar](50) NOT NULL,
+	[LastModifiedDate] [datetime] NOT NULL,
+	[TotalCost] [decimal](20, 4) NULL,
+	[LaborTotal] [decimal](20, 4) NULL,
+	[SteadyStateLabor] [decimal](20, 4) NULL,
+	[OnShoreSteadyStateAcsLabor] [decimal](20, 4) NULL,
+	[OffShoreSteadyStateAcsLabor] [decimal](20, 4) NULL,
+	[ExternalSteadyStateLabor] [decimal](20, 4) NULL,
+	[TransitionLabor] [decimal](20, 4) NULL,
+	[TransformationLabor] [decimal](20, 4) NULL,
+	[NonLaborTotal] [decimal](20, 4) NULL,
+	[SteadyStateNonLabor] [decimal](20, 4) NULL,
+	[OneTimeSteadyStateNonLabor] [decimal](20, 4) NULL,
+	[RecurringSteadyStateNonLabor] [decimal](20, 4) NULL,
+	[TransitionNonLabor] [decimal](20, 4) NULL,
+	[TransformationNonLabor] [decimal](20, 4) NULL,
+	[FteCount] [decimal](20, 4) NULL,
+	[OnshoreFteCount] [decimal](20, 4) NULL,
+	[OffShoreFteCount] [decimal](20, 4) NULL,
+	[OnshoreFtePercent] [decimal](20, 4) NULL,
+	[OffshoreFtePercent] [decimal](20, 4) NULL,
+	[PreCommencementLaborIncremental] [decimal](20, 4) NULL,
+	[PreCommencementLaborNonIncremental] [decimal](20, 4) NULL,
+	[TransitionAcsLaborIncremental] [decimal](20, 4) NULL,
+	[TransitionAcsLaborNonIncremental] [decimal](20, 4) NULL,
+	[TransitionExternalLabor] [decimal](20, 4) NULL,
+	[TransitionTravel] [decimal](20, 4) NULL,
+	[TransitionEquipment] [decimal](20, 4) NULL,
+	[TransitionMiscellaneous] [decimal](20, 4) NULL,
+	[TransformationAcsLaborIncremental] [decimal](20, 4) NULL,
+	[TransformationAcsLaborNonIncremental] [decimal](20, 4) NULL,
+	[TransformationExternalLabor] [decimal](20, 4) NULL,
+	[TransformationTravel] [decimal](20, 4) NULL,
+	[TransformationEquipment] [decimal](20, 4) NULL,
+	[TransformationMiscellaneous] [decimal](20, 4) NULL,
+	[TransitionCostStandards] [decimal](20, 4) NULL,
+	[CatalogSolutionStandards] [decimal](20, 4) NULL,
+	[ToolSupportStandards] [decimal](20, 4) NULL,
+	[LaborRateStandards] [decimal](20, 4) NULL,
+	[SpeedsAndFeedsRetrievedDate] [datetime] NULL,
+	[DealInformationRetrievedDate] [datetime] NULL,
+	[Category] [varchar](50) NULL,
+	[ModelFileName] [varchar](150) NOT NULL,
+	[TowerRateStandards] [decimal](20, 4) NULL,
+	[TravelRateStandards] [decimal](20, 4) NULL,
+	[HeadcountEfficiencyStandards] [decimal](20, 4) NULL,
+	[UnitRateStandards] [decimal](20, 4) NULL,
+ CONSTRAINT [PK_Model] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+ALTER TABLE [dbo].[Model]  WITH CHECK ADD  CONSTRAINT [FK_Model_Deal] FOREIGN KEY([DealId])
+REFERENCES [dbo].[Deal] ([Id])
+GO
+
+ALTER TABLE [dbo].[Model] CHECK CONSTRAINT [FK_Model_Deal]
+GO
+
+ALTER TABLE [dbo].[Model]  WITH CHECK ADD  CONSTRAINT [FK_Model_Tower] FOREIGN KEY([TowerId])
+REFERENCES [dbo].[Tower] ([Id])
+GO
+
+ALTER TABLE [dbo].[Model] CHECK CONSTRAINT [FK_Model_Tower]
+GO
+
+ALTER TABLE [dbo].[Model] ADD  CONSTRAINT [DF_Model_ModelFileName]  DEFAULT ('File name not provided') FOR [ModelFileName]
+GO
