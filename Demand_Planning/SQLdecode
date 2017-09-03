@@ -1,0 +1,54 @@
+SELECT
+   A.Demand_Country, A.DEV_CD, A.STYLE, A.CLR, B.XPL_PROD_LN_CD , B.XPL_PROD_LN_DESC , B.XPR_PROD_TYP_CD , B.XPR_PROD_TYP_DESC , B.XPC_PROD_CAT_CD,
+   B.XPC_PROD_CAT_DESC, B.SY_STY_NM,
+   Decode(A.BUY_MONTH, '01-JUN-01',SUM(A.NNDP_CURR_QTY),0) as Current_June,
+   Decode(A.BUY_MONTH, '01-JUN-01',SUM(A.NNDP_PREV_QTY),0) as Previous_June,
+   Decode(A.BUY_MONTH, '01-JUN-01',SUM(A.NNDP_CURR_QTY),0)-Decode(A.BUY_MONTH, '01-JUN-01',SUM(A.NNDP_PREV_QTY),0) as Raw_Variance_June,
+   ABS(Decode(A.BUY_MONTH, '01-JUN-01',SUM(A.NNDP_CURR_QTY),0)-Decode(A.BUY_MONTH, '01-JUN-01',SUM(A.NNDP_PREV_QTY),0)) as ABS_June,    
+   Decode(A.BUY_MONTH, '01-JUL-01',SUM(A.NNDP_CURR_QTY),0) as Current_July,
+   Decode(A.BUY_MONTH, '01-JUL-01',SUM(A.NNDP_PREV_QTY),0) as Previous_July,
+   Decode(A.BUY_MONTH, '01-JUL-01',SUM(A.NNDP_CURR_QTY),0)-Decode(A.BUY_MONTH, '01-JUL-01',SUM(A.NNDP_PREV_QTY),0) as Raw_Variance_July,
+   Decode(A.BUY_MONTH, '01-AUG-01',SUM(A.NNDP_CURR_QTY),0) as Current_August,
+   Decode(A.BUY_MONTH, '01-AUG-01',SUM(A.NNDP_PREV_QTY),0) as Previous_August,
+   Decode(A.BUY_MONTH, '01-AUG-01',SUM(A.NNDP_CURR_QTY),0)-Decode(A.BUY_MONTH, '01-AUG-01',SUM(A.NNDP_PREV_QTY),0) as Raw_Variance_August,
+   Decode(A.BUY_MONTH, '01-SEP-01',SUM(A.NNDP_CURR_QTY),0) as September,  
+   Decode(A.BUY_MONTH, '01-OCT-01',SUM(A.NNDP_CURR_QTY),0) as October,
+   Decode(A.BUY_MONTH, '01-NOV-01',SUM(A.NNDP_CURR_QTY),0) as November,
+   Decode(A.BUY_MONTH, '01-DEC-01',SUM(A.NNDP_CURR_QTY),0) as December,
+   Decode(A.BUY_MONTH, '01-JAN-02',SUM(A.NNDP_CURR_QTY),0) as January_02    
+FROM GFP_DM.DP_SUBMIT_VAR A, GFP_DM.PROD_INFO B
+WHERE
+     (A.STYLE = B.STYLE)
+ AND (A.CLR = B.CLR)
+ AND (A.BUY_MONTH Between '01-JUN-01' and '01-JAN-02')
+ AND (A.DEMAND_COUNTRY='USA')
+GROUP BY
+   A.DEMAND_COUNTRY
+ , A.DEV_CD
+ , A.STYLE
+ , A.CLR
+ , A.BUY_MONTH
+ , B.XPL_PROD_LN_CD
+ , B.XPL_PROD_LN_DESC
+ , B.XPR_PROD_TYP_CD
+ , B.XPR_PROD_TYP_DESC
+ , B.XPC_PROD_CAT_CD
+ , B.XPC_PROD_CAT_DESC
+ , B.SY_STY_NM
+
+ ORDER BY A.Demand_Country, A.DEV_CD, A.STYLE, A.CLR  
+   
+   --Decode(A.BUY_MONTH, '01-JUN-01',SUM(A.NNDP_PREV_QTY),0) as Previous
+         /* Decode(A.BUY_MONTH, '01-JUN-01',SUM(A.NNDP_CURR_QTY),0)-Decode(A.BUY_MONTH, '01-JUN-01',SUM(A.NNDP_PREV_QTY),0) as Raw_Variance_June,
+   ABS(Decode(A.BUY_MONTH, '01-JUN-01',SUM(A.NNDP_CURR_QTY),0)-Decode(A.BUY_MONTH, '01-JUN-01',SUM(A.NNDP_PREV_QTY),0)) as ABS_June,    
+   Decode(A.BUY_MONTH, '01-JUL-01',SUM(A.NNDP_PREV_QTY),0) as Current_July,
+   Decode(A.BUY_MONTH, '01-JUL-01',SUM(A.NNDP_CURR_QTY),0) as Previous_July,
+   Decode(A.BUY_MONTH, '01-JUL-01',SUM(A.NNDP_CURR_QTY),0)-Decode(A.BUY_MONTH, '01-JUL-01',SUM(A.NNDP_PREV_QTY),0) as Raw_Variance_July,
+   Decode(A.BUY_MONTH, '01-AUG-01',SUM(A.NNDP_CURR_QTY),0) as Current_August,
+   Decode(A.BUY_MONTH, '01-AUG-01',SUM(A.NNDP_PREV_QTY),0) as Previous_August,
+   Decode(A.BUY_MONTH, '01-AUG-01',SUM(A.NNDP_CURR_QTY),0)-Decode(A.BUY_MONTH, '01-AUG-01',SUM(A.NNDP_PREV_QTY),0) as Raw_Variance_August,
+   Decode(A.BUY_MONTH, '01-SEP-01',SUM(A.NNDP_CURR_QTY),0) as September,  
+   Decode(A.BUY_MONTH, '01-OCT-01',SUM(A.NNDP_CURR_QTY),0) as October,
+   Decode(A.BUY_MONTH, '01-NOV-01',SUM(A.NNDP_CURR_QTY),0) as November,
+   Decode(A.BUY_MONTH, '01-DEC-01',SUM(A.NNDP_CURR_QTY),0) as December,
+   Decode(A.BUY_MONTH, '01-JAN-02',SUM(A.NNDP_CURR_QTY),0) as January_02*/
